@@ -11,7 +11,10 @@ function CurrentUserProvider({ children }) {
     useEffect(() => {
         const getLoggedInUser = async () => {
             let response = await fetch('http://localhost:5000/authentication/profile', {
-               credentials: 'include'
+               headers: {
+                'Authorization': `Bearer ${localStorage.getItem('token')}`
+                }
+                    // Note that we've prepended the word "Bearer" to the JWT here. This is not really required for the authentication to work, but it is conventional when sending authorization tokens to an API.
             })
             let user = await response.json()
             setCurrentUser(user)
@@ -24,6 +27,7 @@ function CurrentUserProvider({ children }) {
             {children}
         </CurrentUser.Provider>
     )
-}
+};
+
 
 export default CurrentUserProvider;
